@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% block body_content %}
+<h1>Board</h1>
+<body>
+	{% for postage in posts %}
+		<div>
+			<h3>{{ postage.title }}</h3>
+			<p>{{ postage.content }}</p>
+			<p>By: {{ postage.first_name }} {{ postage.last_name }}</p>
+		</div>
+	{% endfor %}
+</body>
+{% endblock %}

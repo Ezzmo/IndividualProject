@@ -1,15 +1,4 @@
-<html>
-	<head>
-		{% if title %}
-		<title>{{ title }} - Footrumps</title>
-		{% else %}
-		<title>Welcome to Footrumps</title>
-		{% endif %}
-	</head>
-	<body>
-		<h1>Hello, {{ user.username }}!</h1>
-		{% for post in posts %}
-		<div><p>{{ post.author.username }}: <b>{{ post.body }}</b></p></div>
-		{% endfor %}
-	</body>
-</html>
+{% extends "layout.html" %}
+{% block body_content %}
+	<p1> Welcome to my webapp! </p1>
+{% endblock %}
