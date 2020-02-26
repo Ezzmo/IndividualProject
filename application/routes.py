@@ -1,20 +1,11 @@
 from flask import render_template, redirect, url_for
-from application import app, db
-from application.models import Posts
-from application.forms import PostForm
+from application import app, db, bcrypt
+from application.models import Posts, Users
+from application.forms import PostForm, RegistrationForm
 @app.route('/')
 @app.route('/home')
 def home():
-    user = {'username': 'Mo'}
-    posts =[
-            {'author' : {'username' : 'Chief'},
-             'body' : 'Anyone wanna play me?'
-            },
-            {'author' : {'username' : 'Merkleman'},
-             'body' : 'Im definitely the best'
-            }     
-        ]
-    return render_template('home.html', title='Home', user=user, posts=posts)
+    return render_template('home.html', title='Home')
 @app.route('/post', methods=['GET', 'POST'])
 def post():
     form = PostForm()
@@ -37,3 +28,14 @@ def post():
 def board():
     posts = Posts.query.all()[::-1]
     return render_template('postboard.html', posts=posts)
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        hash_pw = bcrypt.generate_password_hash(form.password.data)
+        user = Users(Email=form.email.data, Password=hash_pw, Username=form.username.data)
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('post'))
+    return render_template('register.html', title = 'Register',form=form)

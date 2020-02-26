@@ -14,8 +14,13 @@ class Posts(db.Model):
             ])
 
 class Users(db.Model):
-    Username = db.Column(db.String(15), primary_key=True)
+    Username = db.Column(db.String(15), primary_key = True)
     Password = db.Column(db.String(30), nullable = False)
+    Email = db.Column(db.String(50), nullable = False)
+
+    def __repr__(self):
+        return''.join(['Username: ', self.Username, '\r\n', 'Email: ', self.Email])
+
 class Players(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     Name = db.Column(db.String(50), nullable=False, unique=True)
