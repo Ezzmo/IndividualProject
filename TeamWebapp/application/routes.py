@@ -25,3 +25,6 @@ def account():
 		form.email.data = current_user.email
 	return render_template('account.html', title='Account', form=form)
 
+@app.route('community.html', methods=['GET', 'POST'])
+def community():
+	communityteams=UserTeams.query.all()
