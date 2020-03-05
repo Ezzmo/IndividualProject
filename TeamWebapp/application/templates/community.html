@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% block body_content %}
+    <h1>Teams</h1>
+	<style>
+	table, th, td {
+		border: 1px solid black;
+	}
+	</style>
+
+    
+    {% for team in communityteams %}
+    
+    	<div>
+		<table style="width:100%">
+			<tr>
+				<th>TeamID</th>
+				<th>Team Name</th>
+				<th>Rating</th>
+				<th>User</th>
+			</tr>
+			<tr>
+            
+				<td>{{ team.TeamID }}</td>
+	    			<td>{{ team.TeamName }}</td>
+	    			<td>{{ team.Rating }}</td>
+	    			<td>{{ team.User }}</td>
+			</tr>
+		</table>
+	</div>
+    {% endfor %}
+{% endblock body_content %}

@@ -31,9 +31,11 @@ class UserTeams(db.Model):
         ])
 class Users(db.Model):
     Username = db.Column(db.String(50),primary_key=True)
-    First_name = db.column(db.String(30),nullable=False)
+    First_name = db.Column(db.String(30),nullable=False)
     Last_name = db.Column(db.String(30), nullable=False)
     Password = db.Column(db.String(250), nullable=False)
     Teams=db.relationship("User's Teams", backref="Creator", lazy=True)
 
-
+@login_manager.user_loader
+def load_user(id):
+    return Users.query.get(int(id))

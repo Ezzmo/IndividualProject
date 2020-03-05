@@ -1,6 +1,13 @@
 {% extends "layout.html" %}
 
 {% block body_content %}
-<div style="margin-left: 50%;" class ='form'>
-    <form method
-</div>
+<p>Welcome to the team ting</p>
+{% for player in players %}
+	<div>
+		<h3>{{ player.Name }}</h3>
+		<p><b>Rating: </b>{{ player.Rating }}</p>
+		<p><b>Position</b>{{ player.Position }}</p>
+	</div>
+{% endfor %}
+	
+{% endblock %}
