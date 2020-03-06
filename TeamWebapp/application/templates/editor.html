@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block body_content %}
+<h1>Team editor</h1>
+    <p>Need an account? Sign up</p>
+    <div class='form'>
+        <form method=['GET','POST'] action=''>
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.league.label }}
+                {{ form.league }}
+            </div>
+            <br>
+            <div class='form_group'>
+                {{ form.club.label }}
+                {{ form.club }}
+            </div>
+            <br>
+            <div class='form_group'>
+                {{ form.position.label }}
+                {{ form.position }}
+            </div>
+            <div class='form_group'>
+                {{ form.submit }}
+            </div>
+        </form>
+    </div>
+
+{% endblock %}  

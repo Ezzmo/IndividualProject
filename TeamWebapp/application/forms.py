@@ -1,27 +1,15 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from application.models import UserTeams, Users, Players
+from application.models import *
 from flask_login import current_user
+from application import app, db, bcrypt
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username',
             validators = [
                 DataRequired(),
                 Length(min=2,max=15)
-            ]
-    )
-    first_name = StringField('First Name',
-            validators = [
-                DataRequired(),
-                Length(min=4, max=30)
-            ]
-    )
-
-    last_name = StringField('Last Name',
-            validators = [
-                DataRequired(),
-                Length(min=4, max=30)
             ]
     )
     email = StringField('Email',
@@ -32,7 +20,7 @@ class RegistrationForm(FlaskForm):
     )
     password = PasswordField('Password',
         validators = [
-            DataRequired(),
+            DataRequired()
         ]
     )
     confirm_password = PasswordField('Confirm Password',
@@ -49,7 +37,7 @@ class RegistrationForm(FlaskForm):
         if user:
             raise ValidationError('Email already in use')
     def validate_username(self, username):
-        userv = Users.query.filter_by(username = username.data).first()
+        user = Users.query.filter_by(username = username.data).first()
 
         if user:
             raise ValidationError('Username taken')
@@ -96,3 +84,13 @@ class UpdateAccountForm(FlaskForm):
             user = Users.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('Email already in use')
+    
+class TeamEditor(FlaskForm):
+    leaguequery = db.session.query(Players.League.distinct())
+    clubquery = db.session.query(Players.Club.distinct())
+    positionquery = db.session.query(Players.Position.distinct())
+    league = SelectField('League',choices = leaguequery)
+    club = SelectField('Club', choices = clubquery)
+    position = SelectField('Position', choices = positionquery)
+
+    submit = SubmitField('Show')

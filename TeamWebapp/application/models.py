@@ -16,12 +16,18 @@ class Players(db.Model):
             "Position: ", self.Position, '\r\n',
             "Rating: ", str(self.Rating)
         ])
+class Users(db.Model):
+    Username = db.Column(db.String(50),primary_key=True)
+    Email = db.Column(db.String(50),nullable=False)
+    Password = db.Column(db.String(250), nullable=False)
+    Teams= db.relationship("UserTeams", backref="Creator", lazy=True)
 
 class UserTeams(db.Model):
     TeamID = db.Column(db.Integer, primary_key=True)
     TeamName = db.Column(db.String(50),nullable = False)
     Rating = db.Column(db.Integer, nullable = False)
-    User = db.Column(db.String(50), db.ForeignKey('Users.Username'))
+    User = db.Column(db.String(50), db.ForeignKey(Users.Username))
+
 
     def __repr__(self):
         return ''.join([
@@ -29,12 +35,11 @@ class UserTeams(db.Model):
             "Rating: ", str(self.Rating), '\r\n'
             "Created by: ", self.User
         ])
-class Users(db.Model):
-    Username = db.Column(db.String(50),primary_key=True)
-    First_name = db.Column(db.String(30),nullable=False)
-    Last_name = db.Column(db.String(30), nullable=False)
-    Password = db.Column(db.String(250), nullable=False)
-    Teams=db.relationship("User's Teams", backref="Creator", lazy=True)
+class Lineups(db.Model):
+    ID = db.Column(db.Integer, primary_key=True)
+    Player = db.Column(db.String(50), nullable=False)
+    TeamId = db.Column(db.String(50), nullable=False)
+
 
 @login_manager.user_loader
 def load_user(id):

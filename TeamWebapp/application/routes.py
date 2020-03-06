@@ -1,5 +1,5 @@
 from application import app, db, bcrypt
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for, request, flash
 from application.forms import *
 from application.models import *
 from flask_login import login_user, current_user, logout_user, login_required
@@ -7,8 +7,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route('/')
 @app.route('/home')
 def home():
-	players=Players.query.filter_by(Rating > 85).all()
-	return render_template('home.html', title='Home')
+	players=Players.query.all()
+	return render_template('home.html', title='Home', players=players)
 
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
@@ -30,16 +30,35 @@ def account():
 def community():
 	communityteams=UserTeams.query.all()
 	return render_template("community.html", communityteams=communityteams)
-
+@app.route('/editor', methods=['GET', 'POST'])
+def editor():
+	form = TeamEditor()
+	form.club.choices = [(club.id, club.club_name) for club in club.query.filter_by]
+	return render_template("editor.html", form = form)
 @app.route("/account/delete", methods=["GET", "POST"])
 @login_required
 def account_delete():
         user = current_user.Username
         teams = UserTeams.query.filter_by(User=user).all()
         for team in teams:
-                db.session.delete(post)
+                db.session.delete(team)
         account = Users.query.filter_by(Username=user).first()
         logout_user()
         db.session.delete(account)
         db.session.commit()
         return redirect(url_for('register'))
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+	if current_user.is_authenticated:
+		return redirect(url_for('home'))
+	form = RegistrationForm()
+	if form.validate_on_submit():
+		user = Users(
+			Username = form.username.data,
+			Email = form.email.data,
+			Password = bcrypt.generate_password_hash(form.password.data)
+		)
+		db.session.add(user)
+		db.session.commit()
+		return redirect(url_for('home'))
+	return render_template("register.html", form = form)
