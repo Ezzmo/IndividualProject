@@ -86,11 +86,8 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError('Email already in use')
     
 class TeamEditor(FlaskForm):
-    leaguequery = db.session.query(Players.League.distinct())
-    clubquery = db.session.query(Players.Club.distinct())
-    positionquery = db.session.query(Players.Position.distinct())
-    league = SelectField('League',choices = leaguequery)
-    club = SelectField('Club', choices = clubquery)
-    position = SelectField('Position', choices = positionquery)
+    league = SelectField('League',choices = [('England Premier League', 'Premier League'),('Italy Serie A','Serie A')])
+    club = SelectField('Club', choices = [])
+    position = SelectField('Position', choices =[])
 
     submit = SubmitField('Show')

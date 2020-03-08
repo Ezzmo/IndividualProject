@@ -33,7 +33,7 @@ def community():
 @app.route('/editor', methods=['GET', 'POST'])
 def editor():
 	form = TeamEditor()
-	form.club.choices = [(club.id, club.club_name) for club in club.query.filter_by]
+	form.club.choices = [(Players.Name,Players.Name) for Name in (Players.query.filter_by(League='England Premier League').all()]
 	return render_template("editor.html", form = form)
 @app.route("/account/delete", methods=["GET", "POST"])
 @login_required
